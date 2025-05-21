@@ -17,9 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-Route::post('/create-user', [\App\Http\Controllers\CreateUserController::class, 'create']);
-Route::put('/update-user/{id}', [\App\Http\Controllers\UpdateUserController::class, 'update']);
-Route::get('/list-users', [\App\Http\Controllers\ListAllUsersController::class, 'listAllUsers']);
-Route::get('/user/{id}', [\App\Http\Controllers\FindUserByIDController::class, 'findUserByID']);
-Route::delete('/delete-user/{id}', [\App\Http\Controllers\DeleteUserController::class, 'deleteUser']);
+Route::prefix('user')->group(function () {
+    Route::post('/', [\App\Http\Controllers\CreateUserController::class, 'create']);
+    Route::get('/', [\App\Http\Controllers\ListAllUsersController::class, 'listAllUsers']);
+    Route::put('{id}', [\App\Http\Controllers\UpdateUserController::class, 'update']);
+    Route::get('{id}', [\App\Http\Controllers\FindUserByIDController::class, 'findUserByID']);
+    Route::delete('{id}', [\App\Http\Controllers\DeleteUserController::class, 'deleteUser']);
+});
