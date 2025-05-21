@@ -9,15 +9,15 @@ class UserService implements UserServiceContract
 {
     public function create(array $data)
     {
-        $data['password'] = bcrypt($data['password']);
+        // $data['password'] = bcrypt($data['password']);
         return User::create($data);
     }
 
     public function update(int $id, array $data)
     {
-        if (!empty($data['password'])) {
-            $data['password'] = bcrypt($data['password']);
-        }
+        // if (!empty($data['password'])) {
+        //     $data['password'] = bcrypt($data['password']);
+        // }
 
         $user = User::with('role')->findOrFail($id);
         $user->update($data);
