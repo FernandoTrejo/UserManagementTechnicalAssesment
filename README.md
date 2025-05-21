@@ -130,8 +130,8 @@ GET /api/user
 -   `name` – Filter by name (partial match)
 -   `email` – Filter by email (partial match)
 
-Example: /api/user?name=Admin&email=admin@gmail.com
 ---
+Example: `/api/user?name=Admin&email=admin@gmail.com`
 
 ### 🔍 Get User by ID
 
