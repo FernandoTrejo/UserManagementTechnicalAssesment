@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\UserServiceContract;
 use App\Http\Resources\UserResource;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class CreateUserController extends Controller
 {
+    protected UserServiceContract $userService;
+    public function __construct(UserServiceContract $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function create(Request $request)
     {
         $validatedData = $request->validate([
@@ -17,13 +23,7 @@ class CreateUserController extends Controller
             'phone_number' => 'required|string|max:15',
         ]);
 
-        // Create the user
-        $user = User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => bcrypt($validatedData['password']),
-            'phone_number' => $validatedData['phone_number'],
-        ]);
+        $user = $this->userService->create($validatedData);
 
         return (new UserResource($user))
             ->additional(['message' => 'User created successfully'])

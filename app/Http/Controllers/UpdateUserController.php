@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\UserServiceContract;
 use App\Http\Resources\UserResource;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class UpdateUserController extends Controller
 {
+    protected UserServiceContract $userService;
+    public function __construct(UserServiceContract $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
@@ -17,9 +23,7 @@ class UpdateUserController extends Controller
             'phone_number' => 'sometimes|required|string|max:15',
         ]);
 
-        $user = User::findOrFail($id);
-
-        $user->update($validatedData);
+        $user = $this->userService->update($id, $validatedData);
 
         return (new UserResource($user))
             ->additional(['message' => 'User updated successfully'])

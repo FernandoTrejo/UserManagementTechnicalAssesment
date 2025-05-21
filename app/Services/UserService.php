@@ -9,13 +9,19 @@ class UserService implements UserServiceContract
 {
     public function create(array $data)
     {
+        $data['password'] = bcrypt($data['password']);
         return User::create($data);
     }
 
     public function update(int $id, array $data)
     {
+        if (!empty($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        }
+
         $user = User::findOrFail($id);
         $user->update($data);
+
         return $user;
     }
 
@@ -34,10 +40,10 @@ class UserService implements UserServiceContract
     {
         $query = User::query();
         if (!empty($filters['name'])) {
-            $query->where('name', 'like', '%'.$filters['name'].'%');
+            $query->where('name', 'like', '%' . $filters['name'] . '%');
         }
         if (!empty($filters['email'])) {
-            $query->where('email', 'like', '%'.$filters['email'].'%');
+            $query->where('email', 'like', '%' . $filters['email'] . '%');
         }
         return $query->paginate(10);
     }

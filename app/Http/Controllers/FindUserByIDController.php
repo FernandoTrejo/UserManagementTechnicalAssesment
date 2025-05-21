@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\UserServiceContract;
 use App\Http\Resources\UserResource;
-use App\Models\User;
-
 class FindUserByIDController extends Controller
 {
+    protected UserServiceContract $userService;
+    public function __construct(UserServiceContract $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function findUserByID($id)
     {
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
+        $user = $this->userService->findById($id);
 
         return new UserResource($user);
     }
