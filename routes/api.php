@@ -22,3 +22,4 @@ Route::post('/create-user', [\App\Http\Controllers\CreateUserController::class, 
 Route::put('/update-user/{id}', [\App\Http\Controllers\UpdateUserController::class, 'update']);
 Route::get('/list-users', [\App\Http\Controllers\ListAllUsersController::class, 'listAllUsers']);
 Route::get('/user/{id}', [\App\Http\Controllers\FindUserByIDController::class, 'findUserByID']);
+Route::delete('/delete-user/{id}', [\App\Http\Controllers\DeleteUserController::class, 'deleteUser']);
