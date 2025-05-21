@@ -40,10 +40,10 @@ class UserService implements UserServiceContract
     {
         $query = User::query();
         if (!empty($filters['name'])) {
-            $query->where('name', 'like', '%' . $filters['name'] . '%');
+            $query->withName($filters['name']);
         }
         if (!empty($filters['email'])) {
-            $query->where('email', 'like', '%' . $filters['email'] . '%');
+            $query->withEmail($filters['email']);
         }
         return $query->with('role')->paginate(10);
     }

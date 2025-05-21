@@ -48,4 +48,15 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    //scopes
+    public function scopeWithName($query, $name)
+    {
+        return $query->where('name', 'like', "%{$name}%");
+    }
+
+    public function scopeWithEmail($query, $email)
+    {
+        return $query->where('email', 'like', "%{$email}%");
+    }
 }
