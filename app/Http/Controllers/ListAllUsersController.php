@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -9,11 +10,18 @@ class ListAllUsersController extends Controller
 {
     public function listAllUsers(Request $request)
     {
-        $users = User::query()
-            ->when($request->name, fn($q) => $q->where('name', 'like', '%' . $request->name . '%'))
-            ->when($request->email, fn($q) => $q->where('email', 'like', '%' . $request->email . '%'))
-            ->paginate(10);
+        $query = User::query();
 
-        return response()->json($users, 200);
+        if ($request->has('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        if ($request->has('email')) {
+            $query->where('email', 'like', '%' . $request->email . '%');
+        }
+
+        $users = $query->paginate(10);
+
+        return UserResource::collection($users);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -24,6 +25,9 @@ class CreateUserController extends Controller
             'phone_number' => $validatedData['phone_number'],
         ]);
 
-        return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
+        return (new UserResource($user))
+            ->additional(['message' => 'User created successfully'])
+            ->response()
+            ->setStatusCode(201);
     }
 }

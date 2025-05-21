@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+
 class DeleteUserController extends Controller
 {
     public function deleteUser($id)
     {
-        $user = \App\Models\User::find($id);
+        $user = User::find($id);
 
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
