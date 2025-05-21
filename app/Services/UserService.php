@@ -19,7 +19,7 @@ class UserService implements UserServiceContract
             $data['password'] = bcrypt($data['password']);
         }
 
-        $user = User::findOrFail($id);
+        $user = User::with('role')->findOrFail($id);
         $user->update($data);
 
         return $user;
@@ -33,7 +33,7 @@ class UserService implements UserServiceContract
 
     public function findById(int $id)
     {
-        return User::findOrFail($id);
+        return User::with('role')->findOrFail($id);
     }
 
     public function list(array $filters = [])
@@ -45,6 +45,6 @@ class UserService implements UserServiceContract
         if (!empty($filters['email'])) {
             $query->where('email', 'like', '%' . $filters['email'] . '%');
         }
-        return $query->paginate(10);
+        return $query->with('role')->paginate(10);
     }
 }
